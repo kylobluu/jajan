@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Halo Buker</title>
+</head>
+<body>
+    <form>
+        <h2>Kalkulator Penghitung Jajan Luar</h2>
+        <h4>ga 1000000% akurat tapi lumayan. blm ada design soalnya blm belajar sampe sana sbr yh</h4>
+        <label for="country">Ayo jajan di:</label>
+        <select id="country" name="country">
+            <option value="CH">CH</option>
+            <option value="KR">KR</option>
+        </select>
+        <button type="button" id="chooseButton">AKU INGIN JAJAN</button>
+    </form>
+
+    <div id="chCalculator" style="display: none;">
+        <h1>Calcu CH</h1>
+        <h3>Rate CH: 
+            <select id="chRateChoice" onchange="toggleCustomInput('chRateChoice', 'chRateCustom')">
+              <option value="2200">2200</option>
+              <option value="2300">2300</option>
+              <option value="custom">Custom</option>
+            </select>
+            <input type="number" id="chRateCustom" style="display: none;">
+        </h3>
+        <h3>Harga PC: 
+            <select id="chPcChoice" onchange="toggleCustomInput('chPcChoice', 'chPcCustom')">
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+              <option value="custom">Custom</option>
+            </select>
+            <input type="number" id="chPcCustom" style="display: none;">
+        </h3>
+        <h3>Shipping: 
+            <select id="chShippingChoice" onchange="toggleCustomInput('chShippingChoice', 'chShippingCustom')">
+              <option value="0">Free</option>
+              <option value="12">12</option>
+              <option value="15">15</option>
+              <option value="18">18</option>
+              <option value="custom">Custom</option>
+            </select>
+            <input type="number" id="chShippingCustom" style="display: none;">
+        </h3>
+        <h3>Brp Org: 
+            <select id="chBrpOrgChoice" onchange="toggleCustomInput('chBrpOrgChoice', 'chOrgCustom')">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="custom">Custom</option>
+            </select>
+            <input type="number" id="chOrgCustom" style="display: none;">
+        </h3>
+        <h3>Fee TF WH dll (IDR): 
+            <select id="chFeeChoice" onchange="toggleCustomInput('chFeeChoice', 'chFee')">
+              <option value="15000">15000</option>
+              <option value="custom">Custom</option>
+            </select>
+            <input type="number" id="chFee" style="display: none;">
+        </h3>
+      
+        <!-- Add a button to perform CH calculations -->
+        <button onclick="calculateCHTotal()">HITUNG JAJANANKU</button>
+      
+        <h3>Bersih CH: <span id="chTotal"></span></h3>
+    </div>
+
+    <div id="krCalculator" style="display: none;">
+        <h1>Calcu KR</h1>
+        <h3>Rate KR: 
+          <select id="krRateChoice" onchange="toggleCustomInput('krRateChoice', 'krRateCustom')">
+            <option value="11.8">11.8</option>
+            <option value="12">12</option>
+            <option value="custom">Custom</option>
+          </select>
+          <input type="number" id="krRateCustom" style="display: none;">
+        </h3>
+        <h3>Harga PC: 
+          <select id="krPcChoice" onchange="toggleCustomInput('krPcChoice', 'krPcCustom')">
+            <option value="0.05">0.05</option>
+            <option value="0.1">0.1</option>
+            <option value="0.15">0.15</option>
+            <option value="0.2">0.2</option>
+            <option value="0.3">0.3</option>
+            <option value="custom">Custom</option>
+          </select>
+          <input type="number" id="krPcCustom" style="display: none;">
+        </h3>
+        <h3>Shipping: 
+          <select id="krShippingChoice" onchange="toggleCustomInput('krShippingChoice', 'krShippingCustom')">
+            <option value="0">Free</option>
+            <option value="0.18">0.18</option>
+            <option value="0.2">0.2</option>
+            <option value="0.3">0.3</option>
+            <option value="custom">Custom</option>
+          </select>
+          <input type="number" id="krShippingCustom" style="display: none;">
+        </h3>
+        <h3>Brp Org: 
+          <select id="krBrpOrgChoice" onchange="toggleCustomInput('krBrpOrgChoice', 'krOrgCustom')">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="custom">Custom</option>
+          </select>
+          <input type="number" id="krOrgCustom" style="display: none;">
+        </h3>
+        <h3>Fee TF WH dll (IDR): 
+          <select id="krFeeChoice" onchange="toggleCustomInput('krFeeChoice', 'krFee')">
+            <option value="15000">15000</option>
+            <option value="custom">Custom</option>
+          </select>
+          <input type="number" id="krFee" style="display: none;">
+        </h3>
+      
+        <!-- Add a button to perform KR calculations -->
+        <button onclick="calculateKRTotal()">HITUNG JAJANANKU</button>
+      
+        <h3>Bersih KR: <span id="krTotal"></span></h3>
+    </div>
+
+    <script>
+        const countrySelect = document.getElementById("country");
+        const chCalculator = document.getElementById("chCalculator");
+        const krCalculator = document.getElementById("krCalculator");
+        const chooseButton = document.getElementById("chooseButton");
+
+        chooseButton.addEventListener("click", function () {
+            const selectedCountry = countrySelect.value;
+
+            if (selectedCountry === "CH") {
+                chCalculator.style.display = "block";
+                krCalculator.style.display = "none";
+            } else if (selectedCountry === "KR") {
+                krCalculator.style.display = "block";
+                chCalculator.style.display = "none";
+            }
+        });
+
+        function toggleCustomInput(selectId, customInputId) {
+            const selectElement = document.getElementById(selectId);
+            const customInput = document.getElementById(customInputId);
+
+            if (selectElement.value === "custom") {
+                customInput.style.display = "block";
+            } else {
+                customInput.style.display = "none";
+            }
+        }
+
+        function calculateCHTotal() {
+            const rateChoice = document.getElementById("chRateChoice").value;
+            const pcChoice = document.getElementById("chPcChoice").value;
+            const shippingChoice = document.getElementById("chShippingChoice").value;
+            const brpOrgChoice = document.getElementById("chBrpOrgChoice").value;
+            const feeChoice = document.getElementById("chFeeChoice").value;
+
+            let pcPrice = (pcChoice === "custom") ? parseFloat(document.getElementById("chPcCustom").value) : parseFloat(pcChoice);
+            let brpOrg = (brpOrgChoice === "custom") ? parseFloat(document.getElementById("chOrgCustom").value) : parseFloat(brpOrgChoice);
+            let feeDll = (feeChoice === "custom") ? parseFloat(document.getElementById("chFee").value) : parseFloat(feeChoice);
+            let rate = (rateChoice === "custom") ? parseFloat(document.getElementById("chRateCustom").value) : parseFloat(rateChoice);
+            let shipping = (shippingChoice === "custom") ? parseFloat(document.getElementById("chShippingCustom").value) : parseFloat(shippingChoice);
+
+            const total = (pcPrice + shipping / brpOrg) * rate + (feeDll / brpOrg);
+            const roundedTotal = Math.round(total);
+
+            document.getElementById("chTotal").textContent = roundedTotal;
+        }
+        
+        function calculateKRTotal() {
+            const rateChoice = document.getElementById("krRateChoice").value;
+            const pcChoice = document.getElementById("krPcChoice").value;
+            const shippingChoice = document.getElementById("krShippingChoice").value;
+            const brpOrgChoice = document.getElementById("krBrpOrgChoice").value;
+            const feeChoice = document.getElementById("krFeeChoice").value;
+
+            let pcPrice = (pcChoice === "custom") ? parseFloat(document.getElementById("krPcCustom").value) : parseFloat(pcChoice);
+            let brpOrg = (brpOrgChoice === "custom") ? parseFloat(document.getElementById("krOrgCustom").value) : parseFloat(brpOrgChoice);
+            let feeDll = (feeChoice === "custom") ? parseFloat(document.getElementById("krFee").value) : parseFloat(feeChoice);
+            let rate = (rateChoice === "custom") ? parseFloat(document.getElementById("krRateCustom").value) : parseFloat(rateChoice);
+            let shipping = (shippingChoice === "custom") ? parseFloat(document.getElementById("krShippingCustom").value) : parseFloat(shippingChoice);
+
+            const total = (pcPrice + shipping / brpOrg) * rate * 10000 + (feeDll / brpOrg);
+            const roundedTotal = Math.round(total);
+
+            document.getElementById("krTotal").textContent = roundedTotal;
+        }
+    </script>
+
+    <footer>
+        <p>Kritik dan Saran: <a href="https://forms.gle/icJY1YYMVrWKAk7m6" target="_blank">Ayo Ke Gform</a></p>
+    </footer>
+</body>
+</html>
